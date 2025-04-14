@@ -1,6 +1,6 @@
 # Helloworld for dubbo-go
 
-This example demonstrates the basic usage of dubbo-go as an RPC framework. Check [Quick Start][] on our official website for detailed explanation.
+This example demonstrates the basic usage of dubbo-go as an RPC framework. Check [Quick Start](https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/) on our official website for detailed explanation.
 
 ## Contents
 
@@ -56,11 +56,13 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
 [//]: # (```)
 
 ### Run server
+
 ```shell
 go run ./server/main.go
 ```
 
 test server work as expected:
+
 ```shell
 curl \
     --header "Content-Type: application/json" \
@@ -69,10 +71,7 @@ curl \
 ```
 
 ### Run client
+
 ```shell
 go run ./client/main.go
 ```
-
-[Quick Start]: https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/
-[version3]: https://protobuf.dev/programming-guides/proto3/
-[Protocol Buffer Compiler Installation]: https://dubbo-next.staged.apache.org/zh-cn/overview/reference/protoc-installation/

@@ -62,11 +62,11 @@ if err := srv.Serve(); err != nil {
 ### 启动客户端
 
 ```shell
-$ go run ./go-client/cmd/main.go
+go run ./go-client/cmd/main.go
 ```
 
 ### 预期的输出
 
-```
+```txt
 Greet response: greeting:"hello world"
 ```

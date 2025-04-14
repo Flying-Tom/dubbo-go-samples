@@ -11,8 +11,9 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
 ## How to run
 
 ### Prerequisites
-1. Install `protoc` [version3][]
-   Please refer to [Protocol Buffer Compiler Installation][].
+
+1. Install `protoc` [version3](https://protobuf.dev/programming-guides/proto3/)
+   Please refer to [Protocol Buffer Compiler Installation](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/protoc-installation/).
 
 2. Install `protoc-gen-go` and `protoc-gen-triple`
    Install the version of your choice of protoc-gen-go. here use the latest version as example:
@@ -20,7 +21,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
     ```shell
     go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.31
     ```
-   
+
     Install the latest version of protoc-gen-triple:
 
     ```shell
@@ -35,13 +36,14 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
     protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. --go-triple_opt=paths=source_relative ./proto/greet.proto
     ```
 
-
 ### Run server
+
 ```shell
 go run ./go-server/cmd/main.go
 ```
 
 test server work as expected:
+
 ```shell
 curl \
     --header "Content-Type: application/json" \
@@ -50,10 +52,7 @@ curl \
 ```
 
 ### Run client
+
 ```shell
 go run ./go-client/cmd/main.go
 ```
-
-[Quick Start]: https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/
-[version3]: https://protobuf.dev/programming-guides/proto3/
-[Protocol Buffer Compiler Installation]: https://dubbo-next.staged.apache.org/zh-cn/overview/reference/protoc-installation/

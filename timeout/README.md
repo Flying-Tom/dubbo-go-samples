@@ -95,34 +95,34 @@ import (
 )
 
 func main() {
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
-		client.WithClientRequestTimeout(3*time.Second),
-	)
-	if err != nil {
-		panic(err)
-	}
+  cli, err := client.NewClient(
+    client.WithClientURL("tri://127.0.0.1:20000"),
+    client.WithClientRequestTimeout(3*time.Second),
+  )
+  if err != nil {
+    panic(err)
+  }
 
-	svc, err := greet.NewGreetService(cli)
-	if err != nil {
-		panic(err)
-	}
+  svc, err := greet.NewGreetService(cli)
+  if err != nil {
+    panic(err)
+  }
 
-	// test timeout
-	resp, err := svc.GreetTimeout(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error("call [greet.GreetService.GreetTimeout] service timeout")
-		logger.Error(err)
-	} else {
-		logger.Infof("Greet response: %s", resp.Greeting)
-	}
+  // test timeout
+  resp, err := svc.GreetTimeout(context.Background(), &greet.GreetRequest{Name: "hello world"})
+  if err != nil {
+    logger.Error("call [greet.GreetService.GreetTimeout] service timeout")
+    logger.Error(err)
+  } else {
+    logger.Infof("Greet response: %s", resp.Greeting)
+  }
 
-	// test normal
-	resp, err = svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error(err)
-	}
-	logger.Infof("Greet response: %s", resp.Greeting)
+  // test normal
+  resp, err = svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+  if err != nil {
+    logger.Error(err)
+  }
+  logger.Infof("Greet response: %s", resp.Greeting)
 }
 ```
 
@@ -130,7 +130,7 @@ func main() {
 
 Start the server first and then the client. You will observe that the `GreetTimeout` request times out, while the `Greet` request receives a normal response.
 
-```
+```txt
 [call [greet.GreetService.GreetTimeout] service timeout]
 Greet response: [hello world]
 ```

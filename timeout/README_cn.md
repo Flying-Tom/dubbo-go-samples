@@ -85,44 +85,44 @@ func (srv *GreetTripleServer) GreetTimeout(ctx context.Context, req *greet.Greet
 package main
 
 import (
-	"context"
-	"time"
+  "context"
+  "time"
 
-	"dubbo.apache.org/dubbo-go/v3/client"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/timeout/proto"
-	"github.com/dubbogo/gost/log/logger"
+  "dubbo.apache.org/dubbo-go/v3/client"
+  _ "dubbo.apache.org/dubbo-go/v3/imports"
+  greet "github.com/apache/dubbo-go-samples/timeout/proto"
+  "github.com/dubbogo/gost/log/logger"
 )
 
 func main() {
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
-		client.WithClientRequestTimeout(3*time.Second),
-	)
-	if err != nil {
-		panic(err)
-	}
+  cli, err := client.NewClient(
+    client.WithClientURL("tri://127.0.0.1:20000"),
+    client.WithClientRequestTimeout(3*time.Second),
+  )
+  if err != nil {
+    panic(err)
+  }
 
-	svc, err := greet.NewGreetService(cli)
-	if err != nil {
-		panic(err)
-	}
+  svc, err := greet.NewGreetService(cli)
+  if err != nil {
+    panic(err)
+  }
 
-	// test timeout
-	resp, err := svc.GreetTimeout(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error("call [greet.GreetService.GreetTimeout] service timeout")
-		logger.Error(err)
-	} else {
-		logger.Infof("Greet response: %s", resp.Greeting)
-	}
+  // test timeout
+  resp, err := svc.GreetTimeout(context.Background(), &greet.GreetRequest{Name: "hello world"})
+  if err != nil {
+    logger.Error("call [greet.GreetService.GreetTimeout] service timeout")
+    logger.Error(err)
+  } else {
+    logger.Infof("Greet response: %s", resp.Greeting)
+  }
 
-	// test normal
-	resp, err = svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error(err)
-	}
-	logger.Infof("Greet response: %s", resp.Greeting)
+  // test normal
+  resp, err = svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+  if err != nil {
+    logger.Error(err)
+  }
+  logger.Infof("Greet response: %s", resp.Greeting)
 }
 ```
 
@@ -130,8 +130,7 @@ func main() {
 
 先启动服务端，再启动客户端，可以观察到`GreetTimeout`请求响应超时，`Greet`请求响应正常
 
-```
+```txt
 [call [greet.GreetService.GreetTimeout] service timeout]
 Greet response: [hello world]
 ```
-

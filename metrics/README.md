@@ -1,6 +1,6 @@
 # metrics for dubbo-go
 
-This example demonstrates the metrics usage of dubbo-go as an RPC framework. Check [Quick Start][] on our official website for detailed explanation.
+This example demonstrates the metrics usage of dubbo-go as an RPC framework. Check [Quick Start](https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/) on our official website for detailed explanation.
 
 ## Contents
 
@@ -11,11 +11,13 @@ This example demonstrates the metrics usage of dubbo-go as an RPC framework. Che
 ## How to run
 
 ### Run server
+
 ```shell
 go run ./go-server/cmd/main.go
 ```
 
 test server work as expected:
+
 ```shell
 curl \
     --header "Content-Type: application/json" \
@@ -24,11 +26,13 @@ curl \
 ```
 
 ### Run client
+
 ```shell
 go run ./go-client/cmd/main.go
 ```
 
 ## deploy to local
+
 install prometheus and open prometheus config file `prometheus.yml`, write the config like this
 
 ```yaml
@@ -80,60 +84,61 @@ click 【Import】button and you will see the Dubbo Observability dashboard,enjo
 
 ## Deploy to Kubernetes
 
-#### kube-prometheus
+### kube-prometheus
 
 install prometheus in k8s [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus)
 
 Set `prometheus-service.yaml` type to NodePort
 
 1. add `dubboPodMoitor.yaml` to  `kube-prometheus` `manifests` dir, The content is as follows
- ```yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
-metadata:
-  name: podmonitor
-  labels:
-    app: podmonitor
-  namespace: monitoring
-spec:
-  namespaceSelector:
-    matchNames:
-      - dubbo-system
-  selector:
-    matchLabels:
-      app-type: dubbo
-  podMetricsEndpoints:
-    - port: metrics # ref to dubbo-app port name metrics
-      path: /prometheus
----
-# rbac
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  namespace: dubbo-system
-  name: pod-reader
-rules:
-  - apiGroups: [""]
-    resources: ["pods"]
-    verbs: ["get", "list", "watch"]
 
----
-# rbac
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: pod-reader-binding
-  namespace: dubbo-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: pod-reader
-subjects:
-  - kind: ServiceAccount
-    name: prometheus-k8s
-    namespace: monitoring
-```
+    ```yaml
+    apiVersion: monitoring.coreos.com/v1
+    kind: PodMonitor
+    metadata:
+      name: podmonitor
+      labels:
+        app: podmonitor
+      namespace: monitoring
+    spec:
+      namespaceSelector:
+        matchNames:
+          - dubbo-system
+      selector:
+        matchLabels:
+          app-type: dubbo
+      podMetricsEndpoints:
+        - port: metrics # ref to dubbo-app port name metrics
+          path: /prometheus
+    ---
+    # rbac
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      namespace: dubbo-system
+      name: pod-reader
+    rules:
+      - apiGroups: [""]
+        resources: ["pods"]
+        verbs: ["get", "list", "watch"]
+
+    ---
+    # rbac
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: pod-reader-binding
+      namespace: dubbo-system
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: pod-reader
+    subjects:
+      - kind: ServiceAccount
+        name: prometheus-k8s
+        namespace: monitoring
+    ```
+
 2. `kubectl apply -f Deployment.yaml`
-3. open prometheus web page such as http://localhost:9090/targets
+3. open prometheus web page such as <http://localhost:9090/targets>
    ![podmonitor.png](./assert/podmonitor.png)
-

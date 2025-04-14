@@ -14,7 +14,7 @@ Dubbo-go supports [OpenTelemetry](https://opentelemetry.io/) tracing.
 
 ### Create Dubbo instance
 
-To use the tracing feature, you need to use `dubbo.NewInstance` to create a Dubbo instance. 
+To use the tracing feature, you need to use `dubbo.NewInstance` to create a Dubbo instance.
 
 If you create server and client directly, only basic RPC feature can be enabled.
 
@@ -74,7 +74,7 @@ sample-ratio: 0.5
 - endpoint: exporter backend endpoint, for example, jaeger exporter's endpoint is `http://localhost:14268/api/traces`
   - `trace.WithEndpoint(string)`
 - propagator: context propagator type, support w3c, b3, more details you can see [here](https://opentelemetry.io/docs/concepts/context-propagation/)
-  - `trace.WithW3cPropagator()` 
+  - `trace.WithW3cPropagator()`
   - `trace.WithB3Propagator()` zipkin exporter default use this
 - sample-mode: sample mode, support ratio, always, never
   - `trace.WithAlwaysMode()`
@@ -82,5 +82,3 @@ sample-ratio: 0.5
   - `trace.WithRatioMode()`
 - sample-ratio: sample ratio, only used when sample-mode is ratio, range between 0 and 1
   - `trace.WithRatio(float64)`
-
-

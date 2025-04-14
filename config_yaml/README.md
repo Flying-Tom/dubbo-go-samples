@@ -5,6 +5,7 @@
 This example demonstrates how to configure using yaml configuration files in Dubbo-go framework
 
 ## 2.Run
+
 ```txt
 .
 ├── go-client
@@ -23,20 +24,26 @@ This example demonstrates how to configure using yaml configuration files in Dub
     └── greet.triple.go
 
 ```
+
 The service is defined using IDL (./proto/greet.proto) and utilizes the Triple protocol.
 
 ### build Proto
+
 ```bash
 cd path_to_dubbogo-sample/config_yaml/proto
 protoc --go_out=. --go-triple_out=. ./greet.proto
 ```
+
 ### Server
+
 ```bash
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
 cd path_to_dubbogo-sample/config_yaml/go-server/cmd
 go run .
 ```
+
 ### Client
+
 ```bash
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
 cd path_to_dubbogo-sample/config_yaml/go-client/cmd
@@ -64,16 +71,17 @@ dubbo:
         retries: 3
         timeout: 3000
 ```
+
 Read and load files through `dubbo.Load()`.
 
 ```go
 //...
 func main() {
-	//...
-	if err := dubbo.Load(); err != nil {
-		//...
-	}
-	//...
+  //...
+  if err := dubbo.Load(); err != nil {
+    //...
+  }
+  //...
 }
 ```
 
@@ -100,19 +108,21 @@ dubbo:
 ```
 
 Read and load files through `dubbo.Load()`.
+
 ```go
 //...
 func main() {
-	//...
-	if err := dubbo.Load(); err != nil {
-		//...
-	}
-	//...
+  //...
+  if err := dubbo.Load(); err != nil {
+    //...
+  }
+  //...
 }
 ```
+
 ## 3.Example
 
-### 3.1 Server 
+### 3.1 Server
 
 #### IDL
 
@@ -141,11 +151,13 @@ service GreetService {
 #### Server Handler
 
 On the server side, define GreetTripleServer struct:
+
 ```go
 type GreetServiceHandler interface {
     Greet(context.Context, *GreetRequest) (*GreetResponse, error)
 }
 ```
+
 Implement the GreetServiceHandler interface and register it through `greet.SetProviderService(srv common.RPCService)`
 
 Load the configuration file through `dubbo.Load()`
@@ -157,35 +169,35 @@ Source file path ：dubbo-go-sample/config_yaml/go-server/cmd/main.go
 package main
 
 import (
-	"context"
-	"errors"
-	"fmt"
+  "context"
+  "errors"
+  "fmt"
 
-	"dubbo.apache.org/dubbo-go/v3"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+  "dubbo.apache.org/dubbo-go/v3"
+  _ "dubbo.apache.org/dubbo-go/v3/imports"
+  greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
 )
 
 type GreetTripleServer struct {
 }
 
 func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	name := req.Name
-	if name != "ConfigTest" {
-		errInfo := fmt.Sprintf("name is not right: %s", name)
-		return nil, errors.New(errInfo)
-	}
+  name := req.Name
+  if name != "ConfigTest" {
+    errInfo := fmt.Sprintf("name is not right: %s", name)
+    return nil, errors.New(errInfo)
+  }
 
-	resp := &greet.GreetResponse{Greeting: req.Name + "-Success"}
-	return resp, nil
+  resp := &greet.GreetResponse{Greeting: req.Name + "-Success"}
+  return resp, nil
 }
 
 func main() {
-	greet.SetProviderService(&GreetTripleServer{})
-	if err := dubbo.Load(); err != nil {
-		panic(err)
-	}
-	select {}
+  greet.SetProviderService(&GreetTripleServer{})
+  if err := dubbo.Load(); err != nil {
+    panic(err)
+  }
+  select {}
 }
 ```
 
@@ -201,25 +213,25 @@ Source file path ：dubbo-go-sample/config_yaml/go-client/cmd/main.go
 package main
 
 import (
-	"context"
-	"dubbo.apache.org/dubbo-go/v3"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
-	"github.com/dubbogo/gost/log/logger"
+  "context"
+  "dubbo.apache.org/dubbo-go/v3"
+  _ "dubbo.apache.org/dubbo-go/v3/imports"
+  greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+  "github.com/dubbogo/gost/log/logger"
 )
 
 var svc = new(greet.GreetServiceImpl)
 
 func main() {
-	greet.SetConsumerService(svc)
-	if err := dubbo.Load(); err != nil {
-		panic(err)
-	}
-	req, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "ConfigTest"})
-	if err != nil || req.Greeting != "ConfigTest-Success" {
-		panic(err)
-	}
-	logger.Info("ConfigTest successfully")
+  greet.SetConsumerService(svc)
+  if err := dubbo.Load(); err != nil {
+    panic(err)
+  }
+  req, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "ConfigTest"})
+  if err != nil || req.Greeting != "ConfigTest-Success" {
+    panic(err)
+  }
+  logger.Info("ConfigTest successfully")
 }
 
 ```
@@ -228,8 +240,7 @@ func main() {
 
 Start the server first, then the client.
 If the client prints `ConfigTest Successful`, it means the configuration is loaded and the call success.
-```
+
+```log
 2024-03-11 15:47:29     INFO    cmd/main.go:39  ConfigTest successfully
 ```
-
-

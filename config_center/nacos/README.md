@@ -62,11 +62,11 @@ if err := srv.Serve(); err != nil {
 ### Run client
 
 ```shell
-$ go run ./go-client/cmd/main.go
+go run ./go-client/cmd/main.go
 ```
 
 ### Expect output
 
-```
+```txt
 Greet response: greeting:"hello world"
 ```

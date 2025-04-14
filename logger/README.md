@@ -1,19 +1,20 @@
-## Log usage
+# Log usage
 
 The samples demonstrate how to configure dubbo-go logger using lumberjack
 
-### Contents
+## Contents
 
 * default: print to the console by default
 * level:   set the isolation level of the log
 * rolling: output to file
 * custom: set custom logger
 
-#### print to the console by default
+### print to the console by default
 
 If you don't add a logger to the configuration file, the configuration log will be printed to the console. You can also configure the log in the configuration file. You can refer to the following method:
 
 zap log format and level settings
+
 ```yaml
     logger:
       driver: zap
@@ -28,13 +29,13 @@ zap log format and level settings
         compress: false
 ```
 
-#### set isolation level
+### set isolation level
 
 ```go
 logger.SetLoggerLevel("warn")
 ```
 
-#### output to file
+### output to file
 
 Add the file item under the logger option in the configuration file
 
@@ -48,7 +49,7 @@ Add the file item under the logger option in the configuration file
       compress: false
 ```
 
-#### coustom logger
+### coustom logger
 
 Custom logger needs to implement the logger interface in the logger package
 
@@ -69,7 +70,6 @@ type Logger interface {
 ```
 
 Then call SetLogger method to set logger
-
 
 ```go
 logger.SetLogger(&customLogger{})

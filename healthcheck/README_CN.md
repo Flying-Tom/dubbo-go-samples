@@ -17,38 +17,38 @@ Dubbo-go 内置了基于Triple协议的健康检查服务，帮助用户检测�
 package main
 
 import (
-	"context"
-	"dubbo.apache.org/dubbo-go/v3/client"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	health "dubbo.apache.org/dubbo-go/v3/protocol/triple/health/triple_health"
-	"github.com/dubbogo/gost/log/logger"
+  "context"
+  "dubbo.apache.org/dubbo-go/v3/client"
+  _ "dubbo.apache.org/dubbo-go/v3/imports"
+  health "dubbo.apache.org/dubbo-go/v3/protocol/triple/health/triple_health"
+  "github.com/dubbogo/gost/log/logger"
 )
 
 func main() {
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
-	)
-	if err != nil {
-		panic(err)
-	}
-	svc, err := health.NewHealth(cli)
-	if err != nil {
-		panic(err)
-	}
-	check, err := svc.Check(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
-	if err != nil {
-		logger.Error(err)
-	} else {
-		logger.Info("greet.GreetService's health", check.String())
-	}
-	watch, err := svc.Watch(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
-	if err != nil {
-		logger.Error(err)
-	} else {
-		if watch.Recv() {
-			logger.Info("greet.GreetService's health", watch.Msg().String())
-		}
-	}
+  cli, err := client.NewClient(
+    client.WithClientURL("tri://127.0.0.1:20000"),
+  )
+  if err != nil {
+    panic(err)
+  }
+  svc, err := health.NewHealth(cli)
+  if err != nil {
+    panic(err)
+  }
+  check, err := svc.Check(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
+  if err != nil {
+    logger.Error(err)
+  } else {
+    logger.Info("greet.GreetService's health", check.String())
+  }
+  watch, err := svc.Watch(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
+  if err != nil {
+    logger.Error(err)
+  } else {
+    if watch.Recv() {
+      logger.Info("greet.GreetService's health", watch.Msg().String())
+    }
+  }
 }
 ```
 
@@ -78,4 +78,3 @@ Content-Type: application/json
   "status": "SERVING"
 }
 ```
-

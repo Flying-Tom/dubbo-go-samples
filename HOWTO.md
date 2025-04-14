@@ -4,7 +4,7 @@ There are three ways to run dubbo-go samples:
 
 1. Quick start with bash command: start the sample and perform unit testing through a simple command line
 2. Quick start in IDE (**Recommended**): In ".run" subdirectory a couple of GoLand run configuration files are provided so that user can run each sample with just one click.
-3. Manually config and run in IDE: For completeness purpose, a step-by-step instruction is also provided so that user can understand how to configure and run or debug a sample in IDE. 
+3. Manually config and run in IDE: For completeness purpose, a step-by-step instruction is also provided so that user can understand how to configure and run or debug a sample in IDE.
 
 ## 1. Quick start with makefile
 
@@ -20,13 +20,13 @@ Here we use "helloworld" as an example:
    ```
 
 2. **Start register server (e.g. zookeeper)**
-   
+
    ```bash
    make -f build/Makefile docker-up 
    ```
-   
+
    Once the following messages outputs, the zookeeper server is ready.
-   
+
    ```bash
    >  Starting dependency services with ./integrate_test/dockercompose/docker-compose.yml
    Docker Compose is now in the Docker CLI, try `docker compose up`
@@ -36,21 +36,21 @@ Here we use "helloworld" as an example:
    Creating etcd                      ... done
    Creating nacos-standalone          ... done
    ```
-   
+
    To shut it down, simple run
-   
+
    ```bash
    make -f build/Makefile docker-down
    ```
-   
+
 3. **Start server**
-   
+
     ```bash
     cd helloworld/go-server/cmd
     export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
     go run .
     ```
-   
+
    Once the following messages outputs, the server is ready.
 
    ```bash
@@ -60,9 +60,9 @@ Here we use "helloworld" as an example:
    ```
 
    The output of `go-server` can be found from 'dist/darwin_amd64/release/go-server.log'.
-   
+
 4. **Run client**
-   
+
     ```bash
    cd helloworld/go-client/cmd
    export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
@@ -76,11 +76,12 @@ Here we use "helloworld" as an example:
    2021-10-27T00:40:44.879+0800    DEBUG   proxy/proxy.go:218      [makeDubboCallProxy] result: name:"Hello laurence" id:"12345" age:21 , err: <nil>
    2021-10-27T00:40:44.879+0800    INFO    cmd/client.go:51        client response result: name:"Hello laurence" id:"12345" age:21
    ```
-   
+
 5. **Integration test**
    dubbo-go-samples is designed to serve the purposes of not only the showcases of how to use apache/dubbo-go but also the integration-test for apache/dubbo-go. To run integration test for `go-server`, run the following commands:
 
    Start the server first
+
    ```bash
    cd helloworld/go-server/cmd
    export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
@@ -88,6 +89,7 @@ Here we use "helloworld" as an example:
    ```
 
    Then switch to the single test directory, set the environment variables, and then execute the single test
+
    ```bash
    cd integrate_test/helloworld/tests/integration
    export DUBBO_GO_CONFIG_PATH="../../../../helloworld/go-client/conf/dubbogo.yml"
@@ -103,8 +105,9 @@ Here we use "helloworld" as an example:
    PASS
    ok      github.com/apache/dubbo-go-samples/integrate_test/helloworld/tests/integration  0.119s
    ```
-   
-7. **Shutdown and cleanup**
+
+6. **Shutdown and cleanup**
+
    ```bash
    make -f build/Makefile clean docker-down
    ```
@@ -113,7 +116,7 @@ Here we use "helloworld" as an example:
 
 ## 2. Quick start in IDE
 
-Once open this project in GoLand, a list of pre-configured configures for both server and client can be found from "Run Configuration" pop up menu, for example: "helloworld-go-server" and "helloworld-go-client". 
+Once open this project in GoLand, a list of pre-configured configures for both server and client can be found from "Run Configuration" pop up menu, for example: "helloworld-go-server" and "helloworld-go-client".
 
 ![run-configuration.png](.images/run-configurations.png)
 
@@ -128,7 +131,8 @@ example:
 
    Open "integrate_test/dockercompose/docker-compose.yml", and click ▶︎▶︎ icon in the gutter on the left side of the
    editor, then "Services" tab should pop up and shows the similar message below:
-   ```
+
+   ```log
    Deploying 'Compose: docker'...
    /usr/local/bin/docker-compose -f .../dubbo-go-samples/helloworld/go-server/docker/docker-compose.yml up -d
    Creating network "docker_default" with the default driver
@@ -157,9 +161,9 @@ example:
     * Environment: DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
 
    Then run it to call the remote service, you will observe the following message output:
-   ```
+
+   ```log
    [2021-02-03/16:19:30 main.main: client.go: 66] response result: &{A001 Alex Stocks 18 2020-02-04 16:19:30.422 +0800 CST}
    ```
 
 If you need to debug either the samples or dubbo-go, you may consider switch to **Debug** instead of **Run** in GoLand. To stop, simply click ◼︎ to shutdown everything.
-

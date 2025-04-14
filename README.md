@@ -43,6 +43,7 @@ Pls refer [How To Run](HOWTO.md) for the instructions.
 ## How to contribute
 
 If you want to add more samples, pls. read on:
+
 1. Create new sub directory and give it an appropriate name for your new sample. Pls follow the layout of the existing sample if you are not sure how to organize your code.
 2. Make sure your sample work as expected before submit PR, and make sure GitHub CI passes after PR is submitted. Pls refer to the existing sample on how to test the sample.
 3. Pls provide README.md to explain your samples.

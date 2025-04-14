@@ -5,6 +5,7 @@
 本示例演示如何在Dubbo-go框架中使用yaml配置文件进行配置
 
 ## 2.使用说明
+
 ```txt
 .
 ├── go-client
@@ -23,21 +24,26 @@
     └── greet.triple.go
 
 ```
+
 通过 IDL`./proto/greet.proto` 定义服务 使用triple协议
 
-
 ### build Proto
+
 ```bash
 cd path_to_dubbogo-sample/config_yaml/proto
 protoc --go_out=. --go-triple_out=. ./greet.proto
 ```
+
 ### Server
+
 ```bash
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
 cd path_to_dubbogo-sample/config_yaml/go-server/cmd
 go run .
 ```
+
 ### Client
+
 ```bash
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
 cd path_to_dubbogo-sample/config_yaml/go-client/cmd
@@ -47,6 +53,7 @@ go run .
 ### 2.1客户端使用说明
 
 客户端定义的yaml文件
+
 ```yaml
 # dubbo client yaml configure file
 dubbo:
@@ -64,21 +71,24 @@ dubbo:
         retries: 3
         timeout: 3000
 ```
+
 通过dubbo.Load()调用进行文件的读取以及加载
+
 ```go
 //...
 func main() {
-	//...
-	if err := dubbo.Load(); err != nil {
-		//...
-	}
-	//...
+  //...
+  if err := dubbo.Load(); err != nil {
+    //...
+  }
+  //...
 }
 ```
 
 ### 2.2服务端使用说明
 
 服务端定义的yaml文件
+
 ```yaml
 # dubbo server yaml configure file
 dubbo:
@@ -96,18 +106,21 @@ dubbo:
       GreetTripleServer:
         interface: com.apache.dubbo.sample.Greeter
 ```
+
 通过dubbo.Load()调用进行文件的读取以及加载
+
 ```go
 //...
 func main() {
-	//...
-	if err := dubbo.Load(); err != nil {
-		//...
-	}
-	//...
+  //...
+  if err := dubbo.Load(); err != nil {
+    //...
+  }
+  //...
 }
 
 ```
+
 ## 3.案例
 
 ### 3.1服务端介绍
@@ -139,14 +152,15 @@ service GreetService {
 #### 服务端handler文件
 
 在服务端中，定义GreetTripleServer:
+
 ```go
 type GreetServiceHandler interface {
     Greet(context.Context, *GreetRequest) (*GreetResponse, error)
 }
 ```
+
 实现GreetServiceHandler接口，通过`greet.SetProviderService(&GreetTripleServer{})`进行注册  
 同样使用`dubbo.Load()`进行加载配置文件
-
 
 源文件路径：dubbo-go-sample/config_yaml/go-server/cmd/main.go
 
@@ -155,35 +169,35 @@ type GreetServiceHandler interface {
 package main
 
 import (
-	"context"
-	"errors"
-	"fmt"
+  "context"
+  "errors"
+  "fmt"
 
-	"dubbo.apache.org/dubbo-go/v3"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+  "dubbo.apache.org/dubbo-go/v3"
+  _ "dubbo.apache.org/dubbo-go/v3/imports"
+  greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
 )
 
 type GreetTripleServer struct {
 }
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	name := req.Name
-	if name != "ConfigTest" {
-		errInfo := fmt.Sprintf("name is not right: %s", name)
-		return nil, errors.New(errInfo)
-	}
+  name := req.Name
+  if name != "ConfigTest" {
+    errInfo := fmt.Sprintf("name is not right: %s", name)
+    return nil, errors.New(errInfo)
+  }
 
-	resp := &greet.GreetResponse{Greeting: req.Name + "-Success"}
-	return resp, nil
+  resp := &greet.GreetResponse{Greeting: req.Name + "-Success"}
+  return resp, nil
 }
 
 func main() {
-	greet.SetProviderService(&GreetTripleServer{})
-	if err := dubbo.Load(); err != nil {
-		panic(err)
-	}
-	select {}
+  greet.SetProviderService(&GreetTripleServer{})
+  if err := dubbo.Load(); err != nil {
+    panic(err)
+  }
+  select {}
 }
 ```
 
@@ -198,25 +212,25 @@ func main() {
 package main
 
 import (
-	"context"
-	"dubbo.apache.org/dubbo-go/v3"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
-	"github.com/dubbogo/gost/log/logger"
+  "context"
+  "dubbo.apache.org/dubbo-go/v3"
+  _ "dubbo.apache.org/dubbo-go/v3/imports"
+  greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+  "github.com/dubbogo/gost/log/logger"
 )
 
 var svc = new(greet.GreetServiceImpl)
 
 func main() {
-	greet.SetConsumerService(svc)
-	if err := dubbo.Load(); err != nil {
-		panic(err)
-	}
-	req, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "ConfigTest"})
-	if err != nil || req.Greeting != "ConfigTest-Success" {
-		panic(err)
-	}
-	logger.Info("ConfigTest successfully")
+  greet.SetConsumerService(svc)
+  if err := dubbo.Load(); err != nil {
+    panic(err)
+  }
+  req, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "ConfigTest"})
+  if err != nil || req.Greeting != "ConfigTest-Success" {
+    panic(err)
+  }
+  logger.Info("ConfigTest successfully")
 }
 
 ```
@@ -225,9 +239,6 @@ func main() {
 
 先启动服务端，再启动客户端，可以观察到客户端打印了`ConfigTest successfully`配置加载以及调用成功
 
-```
+```log
 2024-03-11 15:47:29     INFO    cmd/main.go:39  ConfigTest successfully
-
 ```
-
- 
